@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\curso;
 use Illuminate\Http\Request;
 
 class CursoController extends Controller
 {
     public function index(){
-        return view('cursos.index');
+        $cursos = curso::paginate(10);
+        return view('cursos.index', compact('cursos'));
     }
 
     public function create(){
