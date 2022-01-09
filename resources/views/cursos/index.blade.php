@@ -3,12 +3,24 @@
 @section('title', 'Cursos')
 
 @section('content')
+
+    <header>
+        <x-header />
+    </header>
+    <br>
     <h1>Bienvenido a la pagina de los cursos</h1>
-    <a href="{{route('cursos.create')}}">Crear curso</a>
+    @auth
+        <section>
+            <a href="{{route('cursos.create')}}">Crear curso</a>
+        </section>
+    
+    @endauth
+    
      <ul>
          @foreach ($cursos as $curso)
             <li>
                  <a href="{{route('cursos.show', $curso->id)}}">{{$curso->name}}</a>
+                 <p>{{$curso->autor->name}}</p>
             </li>
          @endforeach
      </ul>

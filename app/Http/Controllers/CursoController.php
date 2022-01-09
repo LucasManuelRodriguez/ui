@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\curso;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CursoController extends Controller
 {
@@ -19,19 +20,27 @@ class CursoController extends Controller
     public function store(Request $request){
 
         $request->validate([
-            'name'=>'required',
-            'description'=>'required',
+            'name'=>'required|max:10',
+            'description'=>'required|min:10',
             'category'=>'required'
         ]);
-        
-        $curso = new curso();
 
-        $curso->name = $request->name;
-        $curso->description = $request->description;
-        $curso->category = $request->category;
+        // $curso = new curso();
 
-        $curso->save();
-        return redirect()->route('cursos.show', $curso);
+        // $curso->name = $request->name;
+        // $curso->description = $request->description;
+        // $curso->category = $request->category;
+
+        // $curso->save();
+        $curso = [
+            'name'=> $request->name,
+            'description'=> $request->description,
+            'category'=> $request->category,
+            'user_id'=>Auth::user()->id
+        ];
+
+        curso::create($curso);
+        return redirect(route('cursos.index'));
     }
 
     public function show(curso $curso){
@@ -43,6 +52,13 @@ class CursoController extends Controller
     }
 
     public function update(Request $request, curso $curso){
+        $request->validate([
+            'name'=>'required|max:10',
+            'description'=>'required|min:10',
+            'category'=>'required'
+        ]);
+        
+
         $curso->name = $request->name;
         $curso->description = $request->description;
         $curso->category = $request->category;
