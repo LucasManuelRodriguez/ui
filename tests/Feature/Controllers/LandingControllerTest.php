@@ -34,4 +34,15 @@ class LandingControllerTest extends TestCase
         $response->assertSee($curso[0]->name)
         ->assertSee($curso[1]->name);
     }
+
+    public function test_can_see_all_autors_name_in_instants_list()
+    {
+        User::factory()->create();
+        $curso = curso::factory(2)->create();
+        
+        $response = $this->get(route('cursos.index'));
+
+        $response->assertSee($curso[0]->autor->name)
+        ->assertSee($curso[1]->autor->name);
+    }
 }
